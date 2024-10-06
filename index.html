@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Зміна картинки та тексту при натисканні</title>
+    <style>
+        #image-container {
+            width: 300px;
+            height: 300px;
+            position: relative;
+        }
+        #image-container img {
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+        .click-text {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        .task-label {
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 400px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        #greeting,
+        #name {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        body {
+            transition: background-color 0.5s ease;
+        }
+    </style>
+</head>
+<body>
+
+<div class="task-label">Завдання 1:</div>
+
+<div id="image-container" onclick="changeImage()">
+    <img id="main-image" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTB4aQqtgDNYlKhZPFPeZ15g92JF0ayOpnt9A&s">
+    <div class="click-text">Клікни на фото і воно зміниться</div>
+</div>
+
+<br>
+
+<div class="task-label">Завдання 2:</div>
+
+<button onclick="changeText()" id="button">кнопка 1</button>
+
+<div class="task-label">Завдання 3:</div>
+
+<button onclick="changeTextBlock()" id="button-block">Змінити текст</button>
+
+<p id="paragraph">Це параграф з початковим текстом.</p>
+
+<div id="text-container">
+    <p id="text">Це блок з початковим текстом.</p>
+</div>
+
+<div class="task-label">Завдання 4:</div>
+
+<button onclick="openModal()">Відкрити модальне вікно</button>
+
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <form id="nameForm">
+            <label for="name">Введіть ваше ім'я:</label><br>
+            <input type="text" id="name" name="name"><br><br>
+            <input type="submit" value="Підтвердити">
+        </form>
+    </div>
+</div>
+
+<div class="task-label">Завдання 5:</div>
+
+<div id="greeting" style="display: none;"></div>
+
+<div class="task-label">Завдання 6:</div>
+
+<button onclick="changeBackgroundColor()">Змінити колір фону</button>
+
+<script>
+    var backgroundColors = ["#ff9999", "#99ff99", "#9999ff", "#ffcc99", "#cc99ff", "#99ccff"];
+    var currentBackgroundColorIndex = 0;
+
+    function changeBackgroundColor() {
+        var body = document.body;
+        body.style.backgroundColor = backgroundColors[currentBackgroundColorIndex];
+        currentBackgroundColorIndex++;
+        if (currentBackgroundColorIndex >= backgroundColors.length) {
+            currentBackgroundColorIndex = 0;
+        }
+    }
+
+    function changeImage() {
+        var currentImage = document.getElementById('main-image');
+        if (currentImage.src === "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTB4aQqtgDNYlKhZPFPeZ15g92JF0ayOpnt9A&s") {
+            currentImage.src = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGaF6VVs7zCpWosloDYCHoZMIzuaoRbFc2rQ&s";
+        } else {
+            currentImage.src = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTB4aQqtgDNYlKhZPFPeZ15g92JF0ayOpnt9A&s";
+        }
+    }
+
+    function changeText() {
+        var button = document.getElementById('button');
+        if (button.innerText === "кнопка 1") {
+            button.innerText = "кнопка 2";
+        } else if (button.innerText === "кнопка 2") {
+            button.innerText = "кнопка 3";
+        } else if (button.innerText === "кнопка 3") {
+            button.innerText = "кнопка 4";
+        } else {
+            button.innerText = "кнопка 1";
+        }
+    }
+
+    function changeTextBlock() {
+        var button = document.getElementById('button-block');
+        var paragraph = document.getElementById('paragraph');
+        var text = document.getElementById('text');
+
+        if (button.innerText === "Змінити текст") {
+            button.innerText = "Повернути початковий текст";
+            paragraph.innerText = "Новий текст для параграфа.";
+            text.innerText = "Новий текст для блоку.";
+        } else {
+            button.innerText = "Змінити текст";
+            paragraph.innerText = "Це параграф з початковим текстом.";
+            text.innerText = "Це блок з початковим текстом.";
+        }
+    }
+
+    function openModal() {
+        document.getElementById('myModal').style.display = "block";
+    }
+
+    function closeModal() {
+        document.getElementById('myModal').style.display = "none";
+    }
+
+    document.getElementById('nameForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        var name = document.getElementById('name').value;
+        closeModal();
+        var greetingElement = document.getElementById('greeting');
+        greetingElement.innerText = "Привіт, " + name + "!";
+        greetingElement.style.display = "block";
+    });
+</script>
+
+</body>
+</html>
