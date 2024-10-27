@@ -74,6 +74,11 @@
         body {
             transition: background-color 0.5s ease;
         }
+
+        #error-message {
+            color: red;
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -108,9 +113,10 @@
 <div id="myModal" class="modal">
     <div class="modal-content">
         <span class="close" onclick="closeModal()">&times;</span>
-        <form id="nameForm">
+        <form id="nameForm" onsubmit="return validateName()">
             <label for="name">Введіть ваше ім'я:</label><br>
-            <input type="text" id="name" name="name"><br><br>
+            <input type="text" id="name" name="name"><br>
+            <span id="error-message">Будь ласка, введіть коректне ім'я (тільки літери, мінімум 2 символи).</span><br><br>
             <input type="submit" value="Підтвердити">
         </form>
     </div>
@@ -183,14 +189,23 @@
         document.getElementById('myModal').style.display = "none";
     }
 
-    document.getElementById('nameForm').addEventListener('submit', function(event) {
-        event.preventDefault();
+    function validateName() {
         var name = document.getElementById('name').value;
-        closeModal();
-        var greetingElement = document.getElementById('greeting');
-        greetingElement.innerText = "Привіт, " + name + "!";
-        greetingElement.style.display = "block";
-    });
+        var errorMessage = document.getElementById('error-message');
+        var namePattern = /^[a-zA-Zа-яА-Я]{2,}$/;
+
+        if (!namePattern.test(name)) {
+            errorMessage.style.display = "block";
+            return false;
+        } else {
+            errorMessage.style.display = "none";
+            closeModal();
+            var greetingElement = document.getElementById('greeting');
+            greetingElement.innerText = "Привіт, " + name + "!";
+            greetingElement.style.display = "block";
+            return true;
+        }
+    }
 </script>
 
 </body>
